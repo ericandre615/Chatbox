@@ -1,0 +1,8 @@
+<h2>Show chat</h2>
+
+<ul>
+
+</ul>
+
+<%= link "Edit", to: chat_path(@conn, :edit, @chat) %>
+<%= link "Back", to: chat_path(@conn, :index) %>

@@ -1,0 +1,13 @@
+<h2>ChatRoom | Lobby</h2>
+<div class="container">
+  <ul id="messages-box">
+    <%= for message <- @messages do %>
+      <li>[<%= message.updated_at %>] <%= message.body %></li>
+    <% end %>
+  </ul>
+
+  <%= render "form.html" %>
+</div>
+<footer>
+
+</footer>

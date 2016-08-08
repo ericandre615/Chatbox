@@ -1,0 +1,7 @@
+<h2>Lobby</h2>
+<div id="messages"></div>
+
+<%= render "form.html", changeset: @changeset,
+                        action: chat_path(@conn, :create) %>
+
+<%= link "Back", to: chat_path(@conn, :index) %>
