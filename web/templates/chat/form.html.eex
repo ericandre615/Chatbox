@@ -1,4 +1,4 @@
-<div class="form-group">
+<form name="chat-form" class="form-group">
     <input id="chat-input" type="text" />
     <%= submit "Submit", class: "btn btn-primary" %>
-</div>
+</form>

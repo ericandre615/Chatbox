@@ -1,12 +1,16 @@
 var path = require("path");
+var autoprefixer = require('autoprefixer');
 
 var SRC_DIR = "./web/static";
 var JS_SRC_DIR = SRC_DIR + "/js";
+var CSS_SRC_DIR = SRC_DIR + "/css";
 
 var DEST_DIR = "./priv/static";
 
 module.exports = {
-  entry: JS_SRC_DIR + "/app.js",
+  entry: {
+    "app": ["./web/static/css/app.less", "./web/static/js/app.js"]
+  },
 
   resolve: {
     extensions: ["", ".js", ".jsx"]
@@ -24,11 +28,23 @@ module.exports = {
         include: path.resolve(JS_SRC_DIR)
       },
       {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader!postcss-loader',
+        include: path.resolve(CSS_SRC_DIR)
+      },
+      {
         test: /\.less$/,
-        loader: 'style!css!autoprefixer?{browsers: ["last 3 versions", "safari 5", "ie 8", "ie 9", "opera 12.1", "ios 6", "android 4"]}!less',
-        include: path.resolve(SRC_DIR)
+        loader: 'style-loader!css-loader!postcss-loader!less',
+        include: path.resolve(CSS_SRC_DIR)
       }
     ]
+  },
+
+  postcss: function() {
+    return {
+      defaults: [autoprefixer],
+      cleaner: [autoprefixer({browsers: ["last 3 versions", "safari 5", "ie 8", "ie 9", "opera 12.1", "ios 6", "android 4"]})]
+    };
   },
 
   output: {

@@ -55,6 +55,7 @@ socket.connect()
 // Now that you are connected, you can join channels with a topic:
 let channel = socket.channel("room:lobby", {});
 let chatInput = document.getElementById('chat-input');
+let chatForm = document.querySelector('form[name="chat-form"]');
 let messagesContainer = document.getElementById('messages-box');
 
 if(chatInput) {
@@ -64,6 +65,14 @@ if(chatInput) {
       channel.push('new_msg', {body: chatInput.value});
       chatInput.value = '';
     }
+  }, false);
+
+  chatForm.addEventListener('submit', event => {
+    event.preventDefault();
+    console.log(`chat_msg ${chatInput.value}`);
+    channel.push('new_msg', {body: chatInput.value});
+    chatInput.value = '';
+
   }, false);
 }
 
