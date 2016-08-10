@@ -19,7 +19,7 @@ defmodule Chatbox.Mixfile do
   def application do
     [mod: {Chatbox, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :mariaex]]
+                    :phoenix_ecto, :comeonin, :mariaex]]
   end
 
   # Specifies which paths to compile per environment.
@@ -38,6 +38,8 @@ defmodule Chatbox.Mixfile do
      {:mariaex, "> 0.0.0"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
+     {:guardian, "~> 0.12.0"},
+     {:comeonin, "~> 2.5"},
      {:cowboy, "~> 1.0"}]
   end
 

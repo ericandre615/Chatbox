@@ -40,3 +40,12 @@ config :chatbox, Chatbox.Repo,
   database: "chatbox_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :guardian, Guardian,
+  allow_alogs: ["HS512"], # optional
+  verify_module: Guardian.JWT, # optionsl
+  issuer: "Chatbox",
+  ttl: { 30, :days },
+  verify_user: true, # optional
+  secret_key: "aR2bvzRr1NyiGEE8rb+EV0cw6abxAWoIsf19/07xY8mZIhQeaINEUa6xNnC1FWAH",
+  serializer: Chatbox.GuardianSerializer

@@ -52,6 +52,7 @@ defmodule Chatbox.Web do
       import Chatbox.Router.Helpers
       import Chatbox.ErrorHelpers
       import Chatbox.Gettext
+      import Chatbox.ViewHelper
     end
   end
 

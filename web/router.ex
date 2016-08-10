@@ -9,22 +9,33 @@ defmodule Chatbox.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :browser_session do
+    plug Guardian.Plug.VerifySession # look in session for token
+    plug Guardian.Plug.EnsureAuthenticated, handler: Chatbox.SessionController
+    plug Guardian.Plug.LoadResource
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
+    plug Guardian.Plug.VerifyHeader # look in authorization header for token
+    plug Guardian.Plug.LoadResource
   end
 
   scope "/", Chatbox do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/users", UserController
+    resources "/users", UserController, only: [:new, :create]
+    resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
-  scope "/chat", Chatbox do
-    pipe_through :browser # Use the default browser stack
+  scope "/", Chatbox do
+    pipe_through [:browser, :browser_session]
 
-    get "/", ChatController, :index
+    get "/chat", ChatController, :index
+    resources "/users", UserController, only: [:show, :index, :update]
   end
+
   # Other scopes may use custom stacks.
   # scope "/api", Chatbox do
   #   pipe_through :api

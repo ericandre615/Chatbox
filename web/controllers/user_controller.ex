@@ -28,7 +28,17 @@ defmodule Chatbox.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-    render(conn, "show.html", user: user)
+    changeset = User.changeset(user)
+
+    cond do
+      user == Guardian.Plug.current_resource(conn) ->
+        conn
+        |> render("show.html", user: user, changeset: changeset)
+      :error ->
+        conn
+        |> put_flash(:info, "Not authorized")
+        |> redirect(to: session_path(conn, :index))
+    end
   end
 
   def edit(conn, %{"id" => id}) do
@@ -41,13 +51,21 @@ defmodule Chatbox.UserController do
     user = Repo.get!(User, id)
     changeset = User.changeset(user, user_params)
 
-    case Repo.update(changeset) do
-      {:ok, user} ->
+    cond do
+      user == Guardian.Plug.current_resource(conn) ->
+        case Repo.update(changeset) do
+          {:ok, user} ->
+            conn
+            |> put_flash(:info, "User updated successfully.")
+            |> redirect(to: user_path(conn, :show, user))
+          {:error, changeset} ->
+            conn
+            |> render("show.html", user: user, changeset: changeset)
+        end
+      :error ->
         conn
-        |> put_flash(:info, "User updated successfully.")
-        |> redirect(to: user_path(conn, :show, user))
-      {:error, changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
+        |> put_flash(:info, "No access")
+        |> redirect("/")
     end
   end
 
