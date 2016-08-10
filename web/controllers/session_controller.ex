@@ -24,7 +24,6 @@ defmodule Chatbox.SessionController do
   end
 
   def create(conn, %{"session" => %{"email" => user, "password" => password}}) do
-    IO.puts "SESSION: #{user} --- #{password}"
     case Chatbox.Auth.login_by_email_and_pass(conn, user, password, repo: Repo) do
       {:ok, conn} ->
         logged_in_user = Guardian.Plug.current_resource(conn)
@@ -39,7 +38,6 @@ defmodule Chatbox.SessionController do
   end
 
   def delete(conn, _) do
-    IO.puts "DELETE REDIRECT"
     conn
     |> Guardian.Plug.sign_out
     |> redirect(to: "/")

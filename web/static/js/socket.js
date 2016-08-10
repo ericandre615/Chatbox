@@ -1,3 +1,4 @@
+'use strict';
 // NOTE: The contents of this file will only be executed if
 // you uncomment its entry in "web/static/js/app.js".
 
@@ -5,7 +6,9 @@
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 import {Socket} from "phoenix"
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+const socket = new Socket("/socket", {params: {token: window.userToken}})
+const guardianTokenContainer = document.querySelector('meta[name="guardian_token"]');
+const guardian_token = guardianTokenContainer.getAttribute('content');
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -53,20 +56,12 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 socket.connect()
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("room:lobby", {});
+let channel = socket.channel("room:lobby", {token: guardian_token, guardian_token: guardian_token});
 let chatInput = document.getElementById('chat-input');
 let chatForm = document.querySelector('form[name="chat-form"]');
 let messagesContainer = document.getElementById('messages-box');
 
-if(chatInput) {
-  chatInput.addEventListener('keypress', event => {
-    if(event.keyCode === 13) {
-      console.log(`chat_msg ${chatInput.value}`);
-      channel.push('new_msg', {body: chatInput.value});
-      chatInput.value = '';
-    }
-  }, false);
-
+if(chatInput) { 
   chatForm.addEventListener('submit', event => {
     event.preventDefault();
     console.log(`chat_msg ${chatInput.value}`);
@@ -81,7 +76,7 @@ channel.on('new_msg', payload => {
 
   console.log(`Message Received: ${payload.body}`);
   
-  messageElement.innerHTML = `[${ new Date() }] ${payload.body}`;
+  messageElement.innerHTML = `[${ new Date() }]: ${payload.user_id} -  ${payload.body}`;
   messagesContainer.appendChild(messageElement);
 });
 

@@ -11,10 +11,6 @@ defmodule Chatbox.Auth do
     repo = Keyword.fetch!(opts, :repo)
     user = repo.get_by(Chatbox.User, email: email)
 
-
-    IO.puts "user: #{user.password} GIVEN: #{given_pass}"
-    result = checkpw(given_pass, user.password)
-    IO.puts "checked: #{result}"
     cond do
       user && checkpw(given_pass, user.password) ->
         {:ok, login(conn, user)}
