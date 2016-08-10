@@ -2,6 +2,7 @@ defmodule Chatbox.UserController do
   use Chatbox.Web, :controller
 
   alias Chatbox.User
+  alias Chatbox.Helpers
 
   def index(conn, _params) do
     users = Repo.all(User)
@@ -13,8 +14,14 @@ defmodule Chatbox.UserController do
     render(conn, "new.html", changeset: changeset)
   end
 
+  def hashed_password(password) do
+    Comeonin.Bcrypt.hashpwsalt(password)
+  end
+
   def create(conn, %{"user" => user_params}) do
-    changeset = User.changeset(%User{}, user_params)
+    changeset = User.changeset(%User{}, %{"email" => user_params["email"],
+    "password" => hashed_password(user_params["password"])
+    })
 
     case Repo.insert(changeset) do
       {:ok, _user} ->
