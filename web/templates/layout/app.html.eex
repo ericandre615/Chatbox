@@ -19,6 +19,8 @@
           <ul class="nav nav-pills pull-right">
             <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
             <li><%= link "Chat", to: chat_path(@conn, :index)  %></li>
+            <li><%= link "Sign out", to: session_path(@conn, :delete, :access),  
+                         method: :delete, class: "btn btn-danger" %></li>
           </ul>
         </nav>
         <span class="logo"></span>

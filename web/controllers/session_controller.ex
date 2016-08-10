@@ -39,6 +39,7 @@ defmodule Chatbox.SessionController do
   end
 
   def delete(conn, _) do
+    IO.puts "DELETE REDIRECT"
     conn
     |> Guardian.Plug.sign_out
     |> redirect(to: "/")
