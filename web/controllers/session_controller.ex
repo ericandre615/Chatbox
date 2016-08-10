@@ -13,11 +13,18 @@ defmodule Chatbox.SessionController do
     |> redirect(to: session_path(conn, :new))
   end
 
+  def  index(conn, _) do
+    conn
+    |> put_flash(:info, "redriecting user")
+    |> redirect(to: user_path(conn, :new))
+  end
+
   def new(conn, _) do
     render conn, "new.html"
   end
 
   def create(conn, %{"session" => %{"email" => user, "password" => password}}) do
+    IO.puts "SESSION: #{user} --- #{password}"
     case Chatbox.Auth.login_by_email_and_pass(conn, user, password, repo: Repo) do
       {:ok, conn} ->
         logged_in_user = Guardian.Plug.current_resource(conn)

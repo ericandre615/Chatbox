@@ -2,7 +2,6 @@ defmodule Chatbox.UserController do
   use Chatbox.Web, :controller
 
   alias Chatbox.User
-  alias Chatbox.Helpers
 
   def index(conn, _params) do
     users = Repo.all(User)
@@ -19,8 +18,10 @@ defmodule Chatbox.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    changeset = User.changeset(%User{}, %{"email" => user_params["email"],
-    "password" => hashed_password(user_params["password"])
+
+    hashed = hashed_password(user_params["password"])
+    changeset = User.changeset(%User{}, %{"username" => user_params["username"],
+      "password" => hashed, "email" => user_params["email"]
     })
 
     case Repo.insert(changeset) do
@@ -34,6 +35,8 @@ defmodule Chatbox.UserController do
   end
 
   def show(conn, %{"id" => id}) do
+    
+    IO.puts "user: #{id}"
     user = Repo.get!(User, id)
     changeset = User.changeset(user)
 

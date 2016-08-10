@@ -26,14 +26,14 @@ defmodule Chatbox.Router do
 
     get "/", PageController, :index
     resources "/users", UserController, only: [:new, :create]
-    resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/sessions", SessionController, only: [:new, :create, :delete, :index]
   end
 
   scope "/", Chatbox do
     pipe_through [:browser, :browser_session]
 
     get "/chat", ChatController, :index
-    resources "/users", UserController, only: [:show, :index, :update]
+    resources "/users", UserController, only: [:show, :index, :update, :edit]
   end
 
   # Other scopes may use custom stacks.

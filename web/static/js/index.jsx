@@ -12,4 +12,6 @@ let messageData = [
   { updated_on: new Date(), body: 'body of message three'},
 ];
 
-ReactDOM.render(<Messages messages={messageData} />, mountNode);
+if(mountNode) {
+  ReactDOM.render(<Messages messages={messageData} />, mountNode);
+}
