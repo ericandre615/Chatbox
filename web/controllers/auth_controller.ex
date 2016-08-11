@@ -11,6 +11,7 @@ defmodule Chatbox.Auth do
     user = repo.get_by(Chatbox.User, email: email)
 
     result = checkpw(given_pass, user.password)
+
     cond do
       user && result ->
         {:ok, login(conn, user)}

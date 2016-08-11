@@ -1,6 +1,7 @@
 defmodule Chatbox.UserSocket do
   use Phoenix.Socket
-
+  use Guardian.Phoenix.Socket
+  
   ## Channels
    channel "room:*", Chatbox.RoomChannel
 
@@ -19,6 +20,21 @@ defmodule Chatbox.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+
+  def connect(%{"guardian_token" => jwt} = params, socket) do
+    case sign_in(socket, jwt) do
+       {:ok, authed_socket, guardian_params} ->
+         {:ok, authed_socket}
+       _ ->
+         #unauthed socket
+         {:ok, socket}
+    end 
+  end 
+
+  # def connect(_params, socket) do
+  #   {:error, %{reason: "unauthenticated"}}
+  # end 
+
   def connect(_params, socket) do
     {:ok, socket}
   end

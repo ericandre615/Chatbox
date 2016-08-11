@@ -35,8 +35,6 @@ defmodule Chatbox.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    
-    IO.puts "user: #{id}"
     user = Repo.get!(User, id)
     changeset = User.changeset(user)
 
@@ -81,7 +79,6 @@ defmodule Chatbox.UserController do
 
   def delete(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
-
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(user)
