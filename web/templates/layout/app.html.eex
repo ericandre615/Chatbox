@@ -18,15 +18,8 @@
 
   <body>
     <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-            <li><%= link "Chat", to: chat_path(@conn, :index)  %></li>
-            <li><%= link "Sign out", to: session_path(@conn, :delete, :access),  
-                         method: :delete, class: "btn btn-danger" %></li>
-          </ul>
-        </nav>
+      <header id="masthead" class="header" role="banner">
+        <%= render "navigation.html", conn: @conn %>
         <span class="logo"></span>
       </header>
 
@@ -38,6 +31,7 @@
       </main>
 
     </div> <!-- /container -->
+    <%= render "footer.html"%>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

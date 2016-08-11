@@ -11,7 +11,7 @@ var DEST_DIR = "./priv/static";
 module.exports = {
   entry: {
     "app": ["./web/static/css/app.less", "./web/static/js/app.js"],
-    "chat": ["./web/static/js/socket.js"]
+    "chat.js": ["./web/static/js/socket.js"]
   },
 
   resolve: {

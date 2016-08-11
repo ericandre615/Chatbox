@@ -1,0 +1,19 @@
+<nav role="navigation">
+  <ul role="menu" class="nav nav-pills pull-right">
+    <li role="menuitem">
+      <a href="http://www.phoenixframework.org/docs">Get Started</a>
+    </li>
+    <li role="menuitem">
+      <%= link "Chat", to: chat_path(@conn, :index)  %>
+    </li>
+    <li role="menuitem">
+      <%= if logged_in?(@conn) do %>
+        <%= link "Sign out", to: session_path(@conn, :delete, :access),  
+          method: :delete, class: "btn btn-danger" %>
+      <% else %>
+        <%= link "Sign In", to: session_path(@conn, :new), class: "btn btn-primary" %>
+      <% end %>
+    </li>
+  </ul>
+</nav>
+
