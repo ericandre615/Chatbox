@@ -8,6 +8,9 @@ import {Socket} from "phoenix"
 
 const socket = new Socket("/socket", {params: {token: window.userToken}})
 const guardianTokenContainer = document.querySelector('meta[name="guardian_token"]');
+
+if(guardianTokenContainer) {
+
 const guardian_token = guardianTokenContainer.getAttribute('content');
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -82,5 +85,5 @@ channel.on('new_msg', payload => {
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
-
+}
   export default socket

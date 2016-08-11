@@ -11,7 +11,6 @@ var DEST_DIR = "./priv/static";
 module.exports = {
   entry: {
     "app": ["./web/static/css/app.less", "./web/static/js/app.js"],
-    "chat.js": ["./web/static/js/socket.js"]
   },
 
   resolve: {
@@ -48,10 +47,6 @@ module.exports = {
       cleaner: [autoprefixer({browsers: ["last 3 versions", "safari 5", "ie 8", "ie 9", "opera 12.1", "ios 6", "android 4"]})]
     };
   },
-
-  plugins: [
-    new webpack.optimize.CommonsChunkPlugin('chat', 'chat.js', Infinity)
-  ],
 
   output: {
     path: DEST_DIR + "/js",

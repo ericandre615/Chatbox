@@ -2,7 +2,7 @@
 <div class="container">
   <ul id="messages-box">
     <%= for message <- @messages do %>
-      <li>[<%= message.updated_at %>] <%= message.body %></li>
+      <li>[<%= message.updated_at %>]  <%= message.user.email %> <%= message.body %></li>
     <% end %>
   </ul>
 
