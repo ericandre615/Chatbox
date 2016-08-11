@@ -1,5 +1,6 @@
 defmodule Chatbox.RoomChannel do
   use Phoenix.Channel
+  use Guardian.Channel
   alias Chatbox.Messages
   alias Chatbox.Repo
 
@@ -12,6 +13,8 @@ defmodule Chatbox.RoomChannel do
   end
 
   def handle_in("new_msg", %{"body" => body}, socket) do
+    user = current_resource(socket)
+    IO.puts "CURRENT: #{user}"
     broadcast! socket, "new_msg", %{body: body}
     changeset = Messages.changeset(%Messages{}, %{body: body, room: "lobby", user_id: 1})
     Repo.insert(changeset)
