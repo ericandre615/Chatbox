@@ -1,6 +1,9 @@
 <div class="jumbotron">
-  <h2><%= gettext "Welcome to %{name}", name: "Phoenix!" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+  <h2><%= gettext "Welcome to %{name}", name: "Chatbox!" %></h2>
+  <p>Are you ready to chat off?!?</p>
+  <ul>
+    <li><%= link "Sign Up", to: user_path(@conn, :new) %></li>
+  </ul>
 </div>
 
 <div class="row marketing">
