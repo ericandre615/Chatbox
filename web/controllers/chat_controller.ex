@@ -6,7 +6,7 @@ defmodule Chatbox.ChatController do
 
   def index(conn, _params) do
     messages = Messages
-    |> where([m], m.room == "lobby")
+    |> where([m], m.room == "room:lobby")
     |> Repo.all
 
     render conn, "index.html", messages: messages

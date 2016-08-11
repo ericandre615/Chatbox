@@ -9,7 +9,6 @@ import {Socket} from "phoenix"
 const socket = new Socket("/socket", {params: {token: window.userToken}})
 const guardianTokenContainer = document.querySelector('meta[name="guardian_token"]');
 const guardian_token = guardianTokenContainer.getAttribute('content');
-
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
 // which authenticates the session and assigns a `:current_user`.
@@ -76,7 +75,7 @@ channel.on('new_msg', payload => {
 
   console.log(`Message Received: ${payload.body}`);
   
-  messageElement.innerHTML = `[${ new Date() }]: ${payload.user_id} -  ${payload.body}`;
+  messageElement.innerHTML = `[${ new Date() }]: ${payload.email} : ${payload.room} -  ${payload.body}`;
   messagesContainer.appendChild(messageElement);
 });
 
@@ -84,4 +83,4 @@ channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
-export default socket
+  export default socket
