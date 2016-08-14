@@ -36,6 +36,7 @@ defmodule Chatbox.Web do
 
       import Chatbox.Router.Helpers
       import Chatbox.Gettext
+      import Chatbox.Helpers
     end
   end
 

@@ -18,19 +18,33 @@ defmodule Chatbox.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
+    verifiedpw = if strings_match?(user_params["password"], user_params["verify_password"]), do: user_params["password"], else: nil
+    
+    if verifiedpw do 
+      hashed = hashed_password(user_params["password"])
+    
+      changeset = User.changeset(%User{}, %{"username" => user_params["username"],
+        "password" => hashed, "email" => user_params["email"]
+      })
 
-    hashed = hashed_password(user_params["password"])
-    changeset = User.changeset(%User{}, %{"username" => user_params["username"],
-      "password" => hashed, "email" => user_params["email"]
-    })
+      case Repo.insert(changeset) do
+        {:ok, _user} ->
+          conn
+          |> put_flash(:info, "User created successfully.")
+          |> redirect(to: user_path(conn, :index))
+        {:error, changeset} ->
+          render(conn, "new.html", changeset: changeset)
+      end
+    else
+  
+      changeset = User.changeset(%User{}, %{"username" => user_params["username"],
+        "password" => "notverified", "email" => user_params["email"]
+      })
 
-    case Repo.insert(changeset) do
-      {:ok, _user} ->
-        conn
-        |> put_flash(:info, "User created successfully.")
-        |> redirect(to: user_path(conn, :index))
-      {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+      conn
+      |> put_flash(:info, "Passwords do not match")
+      |> render("new.html", changeset: changeset)
+
     end
   end
 
