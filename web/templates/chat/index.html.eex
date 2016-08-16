@@ -1,10 +1,9 @@
 <h2>ChatRoom | Lobby</h2>
-<div class="container">
+<div class="col-md-8">
   <ul id="messages-box">
     <%= for message <- @messages do %>
       <li>[<%= message.updated_at %>]  <%= message.user.email %> <%= message.body %></li>
     <% end %>
   </ul>
-
   <%= render "form.html" %>
 </div>

@@ -8,6 +8,7 @@ defmodule Chatbox.RoomChannel do
   def join("room:lobby", %{"guardian_token" => token}, socket) do
     case sign_in(socket, token) do
       {:ok, authed_socket, _guardian_params} ->
+        send(self, :after_join)
         {:ok, %{message: "Welcome"}, authed_socket}
       {:error, reason} ->
         # handle error
@@ -17,6 +18,12 @@ defmodule Chatbox.RoomChannel do
 
   def join("room:" <> _private_room_id, _params, _socket) do
     {:error, %{reason: "unauthorized"}}
+  end
+
+  def handle_info(:after_join, socket) do
+    user = current_resource(socket)
+    push socket, "user_joined", %{"username" => user.username, "email" => user.email, "user_id" => user.id}
+    {:noreply, socket}
   end
 
   def handle_in("new_msg", payload, socket) do
@@ -46,5 +53,11 @@ defmodule Chatbox.RoomChannel do
     push socket, "user_joined", msg
     {:noreply, socket}
     end
+  end
+
+  def terminate(_reason, socket) do
+    user = current_resource(socket)
+    push socket, "user_left", %{"username" => user.username, "email" => user.email, "user_id" => user.id}
+    :ok
   end
 end

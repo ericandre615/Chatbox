@@ -14,4 +14,8 @@ defmodule Chatbox.ChatController do
     
     render conn, "index.html", messages: messages
   end
+
+  def users(conn, _params) do
+    render conn, "index.html"
+  end
 end

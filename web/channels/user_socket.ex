@@ -24,6 +24,7 @@ defmodule Chatbox.UserSocket do
   def connect(%{"guardian_token" => jwt} = params, socket) do
     case sign_in(socket, jwt) do
        {:ok, authed_socket, guardian_params} ->
+          IO.puts "CONNECT: #{guardian_params}"
          {:ok, authed_socket}
        _ ->
          #unauthed socket

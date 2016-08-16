@@ -39,6 +39,36 @@ if(guardianTokenContainer) {
     messagesContainer.appendChild(messageElement);
   });
 
+  channel.on('user_joined', payload => {
+    let users = JSON.parse(sessionStorage.getItem('users')) || [];
+
+    let users_ids = users.map(user => user.id ); 
+
+    if(users_ids.indexOf(payload.user_id) == -1) {
+      users.push({
+       "id": payload.user_id,
+       "username": payload.username,
+       "email": payload.email
+      });
+    }
+    sessionStorage.setItem('users', JSON.stringify(users));
+    console.log(`user[${payload.user_id}]  ${payload.username} has joined`);
+  });
+
+  channel.on('user_left', payload => {
+    let users = JSON.parse(sessionStorage.getItem('users'));
+    if(users) {
+      let users_ids = users.map(user => user.id ); 
+      let userIndex = users_ids.indexOf(payload.user_id);
+      
+      if(users_ids.indexOf(payload.user_id) >= 0) {
+        console.log(`userindex: ${userIndex}`);
+        delete users[userIndex];
+      }
+      sessionStorage.setItem('users', JSON.stringify(users));
+      console.log(`user[${payload.user_id}]  ${payload.username} has left`);
+    }
+  });
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
     .receive("error", resp => { console.log("Unable to join", resp) })
