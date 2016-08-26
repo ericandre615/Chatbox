@@ -4,6 +4,7 @@ defmodule Chatbox.RoomChannel do
   import Guardian.Phoenix.Socket
   alias Chatbox.Messages
   alias Chatbox.Repo
+  alias Chatbox.Presence
 
   def join("room:lobby", %{"guardian_token" => token}, socket) do
     case sign_in(socket, token) do
@@ -22,7 +23,13 @@ defmodule Chatbox.RoomChannel do
 
   def handle_info(:after_join, socket) do
     user = current_resource(socket)
+    socket = assign(socket, :user_id, user.id)
+    {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
+      online_at: inspect(System.system_time(:seconds))
+    })
+
     push socket, "user_joined", %{"username" => user.username, "email" => user.email, "user_id" => user.id}
+    push socket, "presence_state", Presence.list(socket)
     {:noreply, socket}
   end
 

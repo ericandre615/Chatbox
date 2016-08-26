@@ -34,7 +34,7 @@ if(guardianTokenContainer) {
     let messageElement = document.createElement('p');
 
     console.log(`Message Received: ${payload.body}`);
-    
+
     messageElement.innerHTML = `[${ new Date() }]: ${payload.email}:  ${payload.body}`;
     messagesContainer.appendChild(messageElement);
   });
@@ -60,7 +60,7 @@ if(guardianTokenContainer) {
     if(users) {
       let users_ids = users.map(user => user.id ); 
       let userIndex = users_ids.indexOf(payload.user_id);
-      
+
       if(users_ids.indexOf(payload.user_id) >= 0) {
         console.log(`userindex: ${userIndex}`);
         delete users[userIndex];
@@ -69,6 +69,17 @@ if(guardianTokenContainer) {
       console.log(`user[${payload.user_id}]  ${payload.username} has left`);
     }
   });
+
+  channel.on('presence_state', payload => {
+    console.log('Presence State Rec: ', payload);
+    let user_ids = Array.from(Object.keys(payload));
+    console.log('USERIDs, ', user_ids);
+  });
+
+  channel.on('presence_diff', payload => {
+    console.log('Pres DIFF ', payload);
+  });
+
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
     .receive("error", resp => { console.log("Unable to join", resp) })
